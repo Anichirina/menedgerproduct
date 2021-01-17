@@ -1,8 +1,8 @@
 package ru.netology.domain;
 
-public class Product<product> {
+public class Product {
     private int id;
-    private  String name;
+    private  String name="";
     private int price;
 
     @Override
@@ -63,6 +63,10 @@ public class Product<product> {
         this.name = name;
         this.price = price;
     }
-
-
+    public boolean matches(String search) {
+        if (name.equalsIgnoreCase(search)) {
+            return true;
+        }
+        return false;
+    }
 }
