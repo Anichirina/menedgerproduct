@@ -1,19 +1,28 @@
 package ru.netology.menedger;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.netology.domain.Book;
 import ru.netology.domain.Product;
+import ru.netology.domain.Smartphone;
 import ru.netology.repository.ProductRepository;
-
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class ProductMenedger {
-    private ProductRepository repository;
+    private ProductRepository repository = new ProductRepository();
 
-
-    public ProductMenedger(ProductRepository repository) {
-        this.repository = repository;
+    public void add(Product item) {
+        repository.save(item);
     }
 
-    public ProductMenedger() {
+    public Product[] getAll() {
+        return repository.findAll();
+    }
 
+    public void removeById(int id) {
+        repository.removeById(id);
     }
 
     public Product[] searchBy(String text) {
@@ -28,12 +37,26 @@ public class ProductMenedger {
         return result;
 
     }
-
-    private boolean matches(Product product, String search) {
-        String search1 = "Pushkin";
-        String search2 = "Ono";
+    public boolean matches(Product product, String search) {
+        if (product instanceof Book) {
+            Book book = (Book) product;
+            if (book.getName().equalsIgnoreCase(search))
+                return true;
+            if (book.getAuthor().equalsIgnoreCase(search)) {
+                return true;
+            }
+        }
+        if (product instanceof Smartphone) {
+            Smartphone smartphone = (Smartphone) product;
+            if (smartphone.getName().equalsIgnoreCase(search))
+                return true;
+            if (smartphone.getManufacturer().equalsIgnoreCase(search)) {
+                return true;
+            }
+        }
         return false;
     }
-}
+
+  }
 
 
